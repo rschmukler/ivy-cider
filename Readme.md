@@ -23,4 +23,3 @@ Call `ivy-cider-apropos` to search for loaded variables in the project.
 
 - [ ] Additional actions (Go to source, search clojuredocs, etc)
 - [ ] Configurable ignorable namespace
-- [ ] Better clojurescript support
