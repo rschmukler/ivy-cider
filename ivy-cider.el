@@ -3,7 +3,7 @@
 ;; Copyright (C) 2020 Ryan Schmukler
 
 ;; Author: Ryan Schmukler <ryan@teknql.com>
-;; Package-Requires: ((emacs "24.4") (cider "0.16") (ivy "0.12.0") (ivy-rich "0.13.0") (seq "2.20")
+;; Package-Requires: ((emacs "24.4") (cider "0.16") (ivy "0.12.0") (ivy-rich "0.1.6") (seq "2.20")
 ;;                    (all-the-icons "3.2.0"))
 ;; Keywords: cider, clojure, ivy, languages
 ;; URL: https://github.com/rschmukler/ivy-cider
@@ -73,7 +73,7 @@
     ("special-form" (all-the-icons-material "extension" :face 'all-the-icons-orange))))
 
 (plist-put
- ivy-rich--display-transformers-list
+ ivy-rich-display-transformers-list
  'ivy-cider-apropos
  '(:columns
    (((lambda (_) " ") (:width 1))
@@ -88,27 +88,25 @@
 
   Optionally takes a NS string which can be used to filter candidates."
   (interactive)
-  (ivy-read
-   (let* ((results (cider-sync-request:apropos ""))
-          (candidates (mapcar
-                       (lambda (x) (nrepl-dict-get x "name"))
-                       results))
-          (filtered-candidates (if ns
-                                (seq-filter
-                                 (lambda (x)
-                                   (equal ns (ivy-cider--rich-apropos-namespace x)))
-                                 candidates)
+  (let* ((results (cider-sync-request:apropos ""))
+         (candidates (mapcar
+                      (lambda (x) (nrepl-dict-get x "name"))
+                      results))
+         (filtered-candidates (if ns
+                                  (seq-filter
+                                   (lambda (x)
+                                     (equal ns (ivy-cider--rich-apropos-namespace x)))
+                                   candidates)
                                 candidates))
-          (active-apropos (mapcar
-                           (lambda (x)
-                             (cons (nrepl-dict-get x "name")
-                                   x))
-                           results))
-          (ivy-cider--active-apropos active-apropos))
-     (setq foo active-apropos)
-     (ivy-read "Apropos: " filtered-candidates
-               :caller 'ivy-cider-apropos
-               :action 'cider-doc-lookup))))
+         (active-apropos (mapcar
+                          (lambda (x)
+                            (cons (nrepl-dict-get x "name")
+                                  x))
+                          results))
+         (ivy-cider--active-apropos active-apropos))
+    (ivy-read "Apropos: " filtered-candidates
+              :caller 'ivy-cider-apropos
+              :action 'cider-doc-lookup)))
 
 ;;;###autoload
 (defun ivy-cider-browse-ns ()
