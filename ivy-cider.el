@@ -48,19 +48,19 @@
   "Return the namespace of the apropos candidate C."
   (let ((parts (split-string c "/")))
     (if (equal 2 (length parts))
-      (first parts)
+      (car parts)
       "")))
 
 (defun ivy-cider--rich-apropos-doc (c)
   "Return the associated documentation of the apropos candidate C."
   (nrepl-dict-get
-   (rest (assoc c ivy-cider--active-apropos))
+   (cdr (assoc c ivy-cider--active-apropos))
    "doc" ""))
 
 (defun ivy-cider--rich-apropos-type (c)
   "Return the type of the apropos candidate C."
   (nrepl-dict-get
-   (rest (assoc c ivy-cider--active-apropos))
+   (cdr (assoc c ivy-cider--active-apropos))
    "type"
    ""))
 
